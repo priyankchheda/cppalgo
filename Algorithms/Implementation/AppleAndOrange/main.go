@@ -12,14 +12,16 @@ import (
 func countApplesAndOranges(s, t, a, b int, apples, oranges []int) {
 	var appleCount int
 	for _, apple := range apples {
-		if (apple + a) >= s {
+		distance := apple + a
+		if distance >= s && distance <= t {
 			appleCount++
 		}
 	}
 
 	var orangeCount int
 	for _, orange := range oranges {
-		if (orange + b) <= t {
+		distance := orange + b
+		if distance >= s && distance <= t {
 			orangeCount++
 		}
 	}
@@ -27,23 +29,12 @@ func countApplesAndOranges(s, t, a, b int, apples, oranges []int) {
 	fmt.Println(orangeCount)
 }
 
-func readline() []string {
-	reader := bufio.NewReader(os.Stdin)
-
-	var lineStr string
-	line, isPrefix, err := reader.ReadLine()
+func readline(reader *bufio.Reader) []string {
+	line, _, err := reader.ReadLine()
 	if err != nil {
 		log.Fatalln(err)
 	}
-	lineStr += string(line)
-	for isPrefix {
-		line, isPrefix, err = reader.ReadLine()
-		if err != nil {
-			log.Fatalln(err)
-		}
-		lineStr += string(line)
-	}
-	return strings.Split(lineStr, " ")
+	return strings.Split(string(line), " ")
 }
 
 func main() {
@@ -52,21 +43,21 @@ func main() {
 	fmt.Scanln(&a, &b)
 	fmt.Scanln(&m, &n)
 
+	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
+
 	var apples []int
-	appleStr := readline()
-	fmt.Println(len(appleStr))
+	appleStr := readline(reader)
 	for i := 0; i < m; i++ {
 		d, _ := strconv.Atoi(appleStr[i])
 		apples = append(apples, d)
 	}
 
 	var oranges []int
-	orangeStr := readline()
-	fmt.Println(len(orangeStr))
+	orangeStr := readline(reader)
 	for i := 0; i < n; i++ {
 		d, _ := strconv.Atoi(orangeStr[i])
 		oranges = append(oranges, d)
 	}
 
-	// countApplesAndOranges(s, t, a, b, apples, oranges)
+	countApplesAndOranges(s, t, a, b, apples, oranges)
 }
