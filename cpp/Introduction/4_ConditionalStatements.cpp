@@ -14,5 +14,5 @@ int main()
         std::cout << dataSet[0];
     } else {
         std::cout << dataSet[n];
-    } 
+    }
 }
